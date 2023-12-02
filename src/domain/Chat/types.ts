@@ -8,7 +8,7 @@ export type MessageItemType = {
   isSeparator?: boolean;
 };
 
-export type MessagesSectionType = {
-  title: string;
-  data: MessageItemType[];
+export type ChatContextType = {
+  messages: MessageItemType[];
+  sendMessage: (message: MessageItemType) => void;
 };

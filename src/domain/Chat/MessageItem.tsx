@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import type { MessageItemType } from './types';
 
 type Props = {
@@ -7,38 +13,44 @@ type Props = {
 };
 const MessageItem = ({ message }: Props) => {
   // You can add more complex logic here to handle different types of messages
+
+  let viewContentStyles: StyleProp<ViewStyle> = baseMessagesStyles.messageItem;
+  if (message.sender === 'Human') {
+    viewContentStyles = messagesStyles.messageItemHuman;
+  } else if (message.isSeparator) {
+    viewContentStyles = messagesStyles.messageItemSeparator;
+  }
+
   return (
-    <View style={styles.messageItem}>
-      {message.isSeparator ? (
-        <Text style={styles.dateSeparator}>{message.text}</Text>
-      ) : (
-        <>
-          <Text style={styles.sender}>{message.sender}</Text>
-          <Text style={styles.messageText}>{message.text}</Text>
-          {/* Render image if message has one */}
-          {message.image && (
-            <Image
-              source={{ uri: message.image }}
-              style={styles.messageImage}
-            />
-          )}
-          {/* Additional content like timestamps, read receipts, etc., can be added here */}
-        </>
-      )}
+    <View style={styles.messageItemContainer}>
+      <View style={viewContentStyles}>
+        <Text
+          style={
+            message.isSeparator ? styles.dateSeparator : styles.messageText
+          }
+        >
+          {message.text}
+        </Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  messageItem: {
-    padding: 10,
+  messageItemContainer: {
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+    backgroundColor: 'gray',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   sender: {
+    width: 'auto',
     fontWeight: 'bold',
   },
   messageText: {
+    width: 'auto',
     color: 'black',
   },
   messageImage: {
@@ -50,6 +62,31 @@ const styles = StyleSheet.create({
   dateSeparator: {
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+});
+
+const baseMessagesStyles = StyleSheet.create({
+  messageItem: {
+    backgroundColor: 'red',
+    alignSelf: 'flex-start',
+    maxWidth: '85%',
+    padding: 12,
+    borderRadius: 12,
+    marginLeft: 5,
+  },
+});
+
+const messagesStyles = StyleSheet.create({
+  messageItemHuman: {
+    ...baseMessagesStyles.messageItem,
+    backgroundColor: 'green',
+    alignSelf: 'flex-end',
+    marginRight: 5,
+  },
+  messageItemSeparator: {
+    ...baseMessagesStyles.messageItem,
+    backgroundColor: '#333',
+    alignSelf: 'center',
   },
 });
 

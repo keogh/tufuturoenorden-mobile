@@ -15,7 +15,6 @@ type Props = {
 };
 
 const MessagesContainer = ({ messages }: Props) => {
-  // `messages` should be an array of sections, each with a title and data
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

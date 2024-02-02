@@ -10,5 +10,6 @@ export type MessageItemType = {
 
 export type ChatContextType = {
   messages: MessageItemType[];
-  sendMessage: (message: MessageItemType) => void;
+  isWaitingForAnswer: boolean;
+  sendMessage: (text: string) => void;
 };

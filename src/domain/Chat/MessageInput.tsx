@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { useChat } from "./ChatContext";
 
 const MessageInput: React.FC = () => {
   const [text, setText] = React.useState<string>('');
+  const Chat = useChat();
 
-  const handleSend = () => {
+  const handleSend = React.useCallback(() => {
     console.log('Send message:', text); // Replace with your send message logic
+    Chat.sendMessage(text);
     setText('');
-  };
+  }, [Chat, text]);
 
   return (
     <View style={styles.container}>

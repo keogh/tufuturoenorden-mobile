@@ -1,12 +1,6 @@
 // TODO: Install typescript eslint and prettier support
 // eslint-disable objectCurlySpacing
-export type MessageItemType = {
-  id: string;
-  sender: string;
-  text: string;
-  image?: string;
-  isSeparator?: boolean;
-};
+import { MessageItemType } from '../Message/types';
 
 export type ChatContextType = {
   messages: MessageItemType[];

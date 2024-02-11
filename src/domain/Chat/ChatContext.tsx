@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { ChatContextType, MessageItemType } from './types';
+import { ChatContextType } from './types';
+import { MessageItemType } from '../Message/types';
 import * as ChatModel from './chatModel';
 import { useAuth } from '../Auth/AuthContext';
+import { useDatabase } from '../Database/DatabaseContext';
+import { Text } from 'react-native';
 
 const ChatContext = React.createContext<ChatContextType | undefined>(undefined);
 
@@ -19,12 +22,24 @@ type Props = {
 
 export const ChatProvider = ({ children }: Props) => {
   const Auth = useAuth();
+  const { db } = useDatabase();
 
   const [messages, setMessages] = React.useState<MessageItemType[]>([]);
   const [isWaitingForAnswer, setIsWaitingForAnswer] = React.useState(false);
 
-  const appendToMessages = (message: MessageItemType) => {
-    setMessages(prevMessages => [message, ...prevMessages]);
+  const appendToMessages = async (message: MessageItemType) => {
+    try {
+      await db?.executeSql(
+        `INSERT OR REPLACE INTO messages(rowid, text, sender) values (${message.id}, '${message.text}', '${message.sender}')`,
+      );
+      setMessages(prevMessages => [message, ...prevMessages]);
+    } catch (e) {
+      console.error(
+        'Error while trying to save the message into DB. Error: ',
+        e,
+      );
+      // TODO: Append an error message to the conversation
+    }
   };
 
   const sendMessage = React.useCallback(
@@ -37,15 +52,15 @@ export const ChatProvider = ({ children }: Props) => {
             question,
           });
           appendToMessages({
-            id: '',
+            id: null,
             sender: 'AI',
             text: answer.message,
           });
-          console.log('Message sent: ', question)
-          console.log('Answer sent: ', answer)
+          console.log('Message sent: ', question);
+          console.log('Answer sent: ', answer);
         } catch (e) {
           console.error('Error in postData within sendMessage: ', e);
-          console.error('identityId: ', Auth.identityId)
+          console.error('identityId: ', Auth.identityId);
           // TODO: Add dismissible error message to messages list
         } finally {
           setIsWaitingForAnswer(false);
@@ -57,7 +72,7 @@ export const ChatProvider = ({ children }: Props) => {
        * - Store message in local sqlite table
        */
       const message: MessageItemType = {
-        id: '',
+        id: null,
         text,
         sender: 'Human', // TODO: Sender needs to be a constant
       };
@@ -66,7 +81,7 @@ export const ChatProvider = ({ children }: Props) => {
       setIsWaitingForAnswer(true);
       postData(text);
     },
-    [Auth.identityId],
+    [Auth.identityId, appendToMessages],
   );
 
   return (
@@ -77,7 +92,7 @@ export const ChatProvider = ({ children }: Props) => {
         isWaitingForAnswer,
       }}
     >
-      {children}
+      {db === null ? <Text>loading...</Text> : children}
     </ChatContext.Provider>
   );
 };

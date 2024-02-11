@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import type { MessageItemType } from './types';
+import type { MessageItemType } from '../Chat/types';
 
 type Props = {
   message: MessageItemType;
 };
 const MessageItem = ({ message }: Props) => {
-  // You can add more complex logic here to handle different types of messages
+  // You can add more complex logic here to handle different types.ts of messages
 
   let viewContentStyles: StyleProp<ViewStyle> = baseMessagesStyles.messageItem;
   if (message.sender === 'Human') {

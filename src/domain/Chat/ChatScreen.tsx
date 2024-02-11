@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import MessagesContainer from './MessagesContainer';
-import { MessageItemType } from './types';
-import { useChat } from "./ChatContext";
+import MessagesContainer from '../Message/MessagesContainer';
+import { MessageItemType } from '../Message/types';
+import { useChat } from './ChatContext';
 
 const dummyMessages: MessageItemType[] = [
   { id: '2', sender: 'AI', text: 'Enough' },

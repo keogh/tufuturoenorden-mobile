@@ -7,7 +7,7 @@ import {
   FlatList,
 } from 'react-native';
 import MessageItem from './MessageItem';
-import type { MessageItemType } from './types';
+import type { MessageItemType } from '../Chat/types';
 import MessageInput from './MessageInput'; // Import the MessageItem component
 
 type Props = {

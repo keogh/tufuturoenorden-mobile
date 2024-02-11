@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
-import { useChat } from "./ChatContext";
+import { useChat } from '../Chat/ChatContext';
 
 const MessageInput: React.FC = () => {
   const [text, setText] = React.useState<string>('');

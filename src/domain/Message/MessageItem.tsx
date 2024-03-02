@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import type { MessageItemType } from '../Chat/types';
+import type { MessageItemType } from './types';
+import { HUMAN_SENDER } from './constants';
 
 type Props = {
   message: MessageItemType;
@@ -9,7 +10,7 @@ const MessageItem = ({ message }: Props) => {
   // You can add more complex logic here to handle different types.ts of messages
 
   let viewContentStyles: StyleProp<ViewStyle> = baseMessagesStyles.messageItem;
-  if (message.sender === 'Human') {
+  if (message.sender === HUMAN_SENDER) {
     viewContentStyles = messagesStyles.messageItemHuman;
   } else if (message.isSeparator) {
     viewContentStyles = messagesStyles.messageItemSeparator;

@@ -4,6 +4,7 @@ import MessagesContainer from '../Message/MessagesContainer';
 import { MessageItemType } from '../Message/types';
 import { useChat } from './ChatContext';
 
+// TODO: Remove dummy messages after testing
 const dummyMessages: MessageItemType[] = [
   { id: '2', sender: 'AI', text: 'Enough' },
   { id: '1', sender: 'Human', text: 'how much money do I have?' },
@@ -50,8 +51,7 @@ const dummyMessages: MessageItemType[] = [
 const ChatScreen = () => {
   const Chat = useChat();
 
-  // TODO: Remove dummy messages after testing
-  const messages = [...Chat.messages, ...dummyMessages];
+  const messages = Chat.messages;
 
   return (
     <View style={{ flex: 1 }}>

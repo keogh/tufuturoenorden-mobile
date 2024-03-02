@@ -1,5 +1,5 @@
 export type MessageItemType = {
-  id: null | string;
+  id: null | string | number;
   sender: string;
   text: string;
   image?: string;

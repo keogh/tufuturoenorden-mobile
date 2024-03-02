@@ -1,4 +1,6 @@
-import { CHAT_API_ROUTE } from "../Routes/api";
+import { CHAT_API_ROUTE } from '../Routes/api';
+import { MessageItemType } from '../Message/types';
+import { SQLiteDatabase } from 'react-native-sqlite-storage';
 
 export type ChatArgs = {
   uuid: string;
@@ -26,4 +28,15 @@ export async function chat({ uuid, question, token = null }: ChatArgs) {
   }
 
   throw new Error(body.message);
+}
+
+export async function saveMessage(
+  db: SQLiteDatabase,
+  message: MessageItemType,
+) {
+  const response = await db.executeSql(
+    `INSERT OR REPLACE INTO messages(rowid, text, sender) values (${message.id}, '${message.text}', '${message.sender}')`,
+  );
+  message.id = response[0].insertId;
+  return message;
 }

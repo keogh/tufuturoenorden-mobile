@@ -7,7 +7,7 @@ import {
   FlatList,
 } from 'react-native';
 import MessageItem from './MessageItem';
-import type { MessageItemType } from '../Chat/types';
+import type { MessageItemType } from './types';
 import MessageInput from './MessageInput'; // Import the MessageItem component
 
 type Props = {
@@ -15,6 +15,7 @@ type Props = {
 };
 
 const MessagesContainer = ({ messages }: Props) => {
+  console.log('MessagesContainer messages: ', messages)
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -23,7 +24,9 @@ const MessagesContainer = ({ messages }: Props) => {
       <View style={styles.listContainer}>
         <FlatList
           data={messages}
-          keyExtractor={(item, index) => item.id + index}
+          keyExtractor={(item, index) =>
+            `${item.id === null ? 'null-' : item.id}-${index}`
+          }
           renderItem={({ item }) => <MessageItem message={item} />}
           inverted
         />

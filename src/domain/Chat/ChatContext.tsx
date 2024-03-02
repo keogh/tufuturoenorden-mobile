@@ -5,6 +5,7 @@ import * as ChatModel from './chatModel';
 import { useAuth } from '../Auth/AuthContext';
 import { useDatabase } from '../Database/DatabaseContext';
 import { Text } from 'react-native';
+import { AI_SENDER, HUMAN_SENDER } from '../Message/constants';
 
 const ChatContext = React.createContext<ChatContextType | undefined>(undefined);
 
@@ -27,36 +28,51 @@ export const ChatProvider = ({ children }: Props) => {
   const [messages, setMessages] = React.useState<MessageItemType[]>([]);
   const [isWaitingForAnswer, setIsWaitingForAnswer] = React.useState(false);
 
-  const appendToMessages = async (message: MessageItemType) => {
-    try {
-      await db?.executeSql(
-        `INSERT OR REPLACE INTO messages(rowid, text, sender) values (${message.id}, '${message.text}', '${message.sender}')`,
-      );
-      setMessages(prevMessages => [message, ...prevMessages]);
-    } catch (e) {
-      console.error(
-        'Error while trying to save the message into DB. Error: ',
-        e,
-      );
-      // TODO: Append an error message to the conversation
-    }
-  };
+  const appendToMessages = React.useCallback(
+    async (message: MessageItemType) => {
+      if (db === null) {
+        throw 'DB unknown.';
+      }
+
+      try {
+        const savedMessage = await ChatModel.saveMessage(db, message);
+        setMessages(prevMessages => {
+          return [savedMessage, ...prevMessages];
+        });
+      } catch (e) {
+        console.error(
+          'Error while trying to save the message into DB. Error: ',
+          e,
+        );
+        // TODO: Append an error message to the conversation
+      }
+    },
+    [db],
+  );
 
   const sendMessage = React.useCallback(
     (text: string) => {
-      async function postData(question: string) {
+      const sendMessageFlow = async (question: string) => {
+        const message: MessageItemType = {
+          id: null,
+          text: question,
+          sender: HUMAN_SENDER,
+        };
+        await appendToMessages(message);
+
         try {
           // TODO: check Auth.token and include it in the payload, and if token dont include uuid
           const answer = await ChatModel.chat({
             uuid: Auth.identityId ?? '',
-            question,
+            question: message.text,
           });
-          appendToMessages({
+
+          await appendToMessages({
             id: null,
-            sender: 'AI',
+            sender: AI_SENDER,
             text: answer.message,
           });
-          console.log('Message sent: ', question);
+          console.log('Message sent: ', message.text);
           console.log('Answer sent: ', answer);
         } catch (e) {
           console.error('Error in postData within sendMessage: ', e);
@@ -65,21 +81,10 @@ export const ChatProvider = ({ children }: Props) => {
         } finally {
           setIsWaitingForAnswer(false);
         }
-      }
-
-      /*  TODO:
-       * - create buildMessage
-       * - Store message in local sqlite table
-       */
-      const message: MessageItemType = {
-        id: null,
-        text,
-        sender: 'Human', // TODO: Sender needs to be a constant
       };
 
-      appendToMessages(message);
       setIsWaitingForAnswer(true);
-      postData(text);
+      return sendMessageFlow(text);
     },
     [Auth.identityId, appendToMessages],
   );

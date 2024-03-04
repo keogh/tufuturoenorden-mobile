@@ -33,12 +33,11 @@ const MessageItem = ({ message }: Props) => {
 
 const styles = StyleSheet.create({
   messageItemContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    backgroundColor: 'gray',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
+    marginVertical: 5,
   },
   sender: {
     width: 'auto',
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
   },
   messageText: {
     width: 'auto',
-    color: 'black',
+    color: '#f9f9f9', // TODO: Theme color
   },
   messageImage: {
     width: 200,
@@ -62,7 +61,8 @@ const styles = StyleSheet.create({
 
 const baseMessagesStyles = StyleSheet.create({
   messageItem: {
-    backgroundColor: 'red',
+    backgroundColor: '#424242', // TODO: Theme color
+    color: '#FFF', // TODO: Theme color
     alignSelf: 'flex-start',
     maxWidth: '85%',
     padding: 12,
@@ -74,7 +74,7 @@ const baseMessagesStyles = StyleSheet.create({
 const messagesStyles = StyleSheet.create({
   messageItemHuman: {
     ...baseMessagesStyles.messageItem,
-    backgroundColor: 'green',
+    backgroundColor: '#5a5a5a', // TODO: Theme color
     alignSelf: 'flex-end',
     marginRight: 5,
   },

@@ -39,17 +39,15 @@ const MessagesContainer = ({ messages }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'yellow',
+    backgroundColor: '#8D8C91', // TODO: Theme color
   },
   listContainer: {
     flex: 1,
     justifyContent: 'flex-end', // Aligns the list content to the bottom
-    // backgroundColor: 'red',
   },
   contentContainer: {
     flexGrow: 1,
     justifyContent: 'flex-end', // Ensures the content inside is also bottom-aligned
-    backgroundColor: 'blue',
   },
   sectionHeader: {
     fontWeight: 'bold',

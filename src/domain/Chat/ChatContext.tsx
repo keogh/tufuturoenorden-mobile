@@ -89,6 +89,18 @@ export const ChatProvider = ({ children }: Props) => {
     [Auth.identityId, appendToMessages],
   );
 
+  React.useEffect(() => {
+    async function fetch() {
+      if (db === null) {
+        return;
+      }
+      const items = await ChatModel.fetchMessages(db);
+      setMessages(items);
+    }
+
+    fetch();
+  }, [db]);
+
   return (
     <ChatContext.Provider
       value={{

@@ -40,3 +40,20 @@ export async function saveMessage(
   message.id = response[0].insertId;
   return message;
 }
+
+export async function fetchMessages(
+  db: SQLiteDatabase,
+): Promise<MessageItemType[]> {
+  const results = await db.executeSql(
+    `SELECT * FROM messages ORDER BY rowid DESC LIMIT 50`
+  );
+
+  const messages: MessageItemType[] = [];
+  results.forEach(result => {
+    for (let i = 0; i < result.rows.length; i++) {
+      messages.push(result.rows.item(i));
+    }
+  });
+
+  return messages;
+}

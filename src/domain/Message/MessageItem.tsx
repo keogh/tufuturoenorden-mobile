@@ -26,6 +26,7 @@ const MessageItem = ({ message }: Props) => {
         >
           {message.text}
         </Text>
+        <Text style={styles.timestamp}>{message.createDateTime}</Text>
       </View>
     </View>
   );
@@ -43,9 +44,16 @@ const styles = StyleSheet.create({
     width: 'auto',
     fontWeight: 'bold',
   },
+  timestamp: {
+    textAlign: 'right',
+    fontSize: 10,
+    color: '#c9c9c9',
+  },
   messageText: {
     width: 'auto',
     color: '#f9f9f9', // TODO: Theme color
+    fontSize: 14,
+    lineHeight: 18,
   },
   messageImage: {
     width: 200,
@@ -68,6 +76,9 @@ const baseMessagesStyles = StyleSheet.create({
     padding: 12,
     borderRadius: 12,
     marginLeft: 5,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 5,
   },
 });
 

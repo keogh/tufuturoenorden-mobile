@@ -7,7 +7,6 @@ const MessageInput: React.FC = () => {
   const Chat = useChat();
 
   const handleSend = React.useCallback(() => {
-    console.log('Send message:', text); // Replace with your send message logic
     Chat.sendMessage(text);
     setText('');
   }, [Chat, text]);
@@ -18,7 +17,8 @@ const MessageInput: React.FC = () => {
         style={styles.input}
         value={text}
         onChangeText={setText}
-        placeholder="Type a message..."
+        placeholder="Message TuFo..."
+        multiline
       />
       <Button title="Send" onPress={handleSend} />
     </View>
@@ -28,17 +28,22 @@ const MessageInput: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 35,
+    paddingHorizontal: 15,
     alignItems: 'center',
     backgroundColor: '#fff',
   },
   input: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    fontSize: 14,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 4,
+    borderRadius: 28,
     marginRight: 10,
+    textAlignVertical: 'top',
   },
 });
 

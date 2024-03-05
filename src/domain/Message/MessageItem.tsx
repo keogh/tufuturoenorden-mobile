@@ -73,8 +73,9 @@ const baseMessagesStyles = StyleSheet.create({
     color: '#FFF', // TODO: Theme color
     alignSelf: 'flex-start',
     maxWidth: '85%',
-    padding: 12,
-    borderRadius: 12,
+    padding: 16,
+    borderRadius: 24,
+    borderBottomLeftRadius: 0,
     marginLeft: 5,
     display: 'flex',
     flexDirection: 'column',
@@ -88,6 +89,8 @@ const messagesStyles = StyleSheet.create({
     backgroundColor: '#5a5a5a', // TODO: Theme color
     alignSelf: 'flex-end',
     marginRight: 5,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 24,
   },
   messageItemSeparator: {
     ...baseMessagesStyles.messageItem,

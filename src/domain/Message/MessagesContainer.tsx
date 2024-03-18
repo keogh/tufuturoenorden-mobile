@@ -20,6 +20,7 @@ const MessagesContainer = ({ messages }: Props) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
+      keyboardVerticalOffset={70}
     >
       <View style={styles.listContainer}>
         <FlatList
@@ -44,10 +45,6 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     justifyContent: 'flex-end', // Aligns the list content to the bottom
-  },
-  contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'flex-end', // Ensures the content inside is also bottom-aligned
   },
   sectionHeader: {
     fontWeight: 'bold',
